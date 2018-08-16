@@ -49,14 +49,6 @@ workbox.routing.registerRoute(
   })
 );
 
-// Cache CSS and JavaScript Files
-workbox.routing.registerRoute(
-  /\.(?:bundle|swr)\.(?:js|css)/,
-  workbox.strategies.staleWhileRevalidate({
-    cacheName: "static-resources"
-  })
-);
-
 workbox.routing.registerRoute(
   /\.min\.(?:js|css)$/,
   workbox.strategies.cacheFirst({
@@ -65,9 +57,17 @@ workbox.routing.registerRoute(
   })
 );
 
+// Cache CSS and JavaScript Files
+workbox.routing.registerRoute(
+  /\.(?:bundle|swr)\.(?:js|css)/,
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: "static-resources"
+  })
+);
+
 // Force a Timeout on Network Requests
 workbox.routing.registerRoute(
-  /test\/timeout/,
+  /forceTimeout/,
   workbox.strategies.networkFirst({
     networkTimeoutSeconds: 3,
     cacheName: "long-time",
@@ -79,5 +79,3 @@ workbox.routing.registerRoute(
     ]
   })
 );
-
-
