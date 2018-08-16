@@ -15,8 +15,13 @@ workbox.core.setCacheNameDetails({
   runtime: "ynw-runtime"
 });
 
-const staticCachePlugin = new workbox.expiration.Plugin({
+const staticAge = new workbox.expiration.Plugin({
   maxAgeSeconds: 30 * 24 * 60 * 60 //30 Day
+});
+
+const timeoutAge = new workbox.expiration.Plugin({
+  maxEntries: 50,
+  maxAgeSeconds: 5 * 60 // 5 minutes
 });
 
 // set strateies with query params
@@ -45,7 +50,7 @@ workbox.routing.registerRoute(
   /\.(?:png|gif|jpg|jpeg|svg|woff2?)$/,
   workbox.strategies.cacheFirst({
     cacheName: "ynw-images",
-    plugins: [staticCachePlugin]
+    plugins: [staticAge]
   })
 );
 
@@ -53,7 +58,7 @@ workbox.routing.registerRoute(
   /\.min\.(?:js|css)$/,
   workbox.strategies.cacheFirst({
     cacheName: "ynw-static",
-    plugins: [staticCachePlugin]
+    plugins: [staticAge]
   })
 );
 
@@ -71,11 +76,6 @@ workbox.routing.registerRoute(
   workbox.strategies.networkFirst({
     networkTimeoutSeconds: 3,
     cacheName: "ynw-timeout",
-    plugins: [
-      new workbox.expiration.Plugin({
-        maxEntries: 50,
-        maxAgeSeconds: 5 * 60 // 5 minutes
-      })
-    ]
+    plugins: [timeoutAge]
   })
 );
