@@ -9,10 +9,10 @@ workbox.setConfig({
 });
 
 workbox.core.setCacheNameDetails({
-  prefix: "my-app",
+  prefix: "ynw",
   suffix: "v1",
-  precache: "precache",
-  runtime: "runtime"
+  precache: "ynw-precache",
+  runtime: "ynw-runtime"
 });
 
 const staticCachePlugin = new workbox.expiration.Plugin({
@@ -44,7 +44,7 @@ workbox.routing.registerRoute(
 workbox.routing.registerRoute(
   /\.(?:png|gif|jpg|jpeg|svg|woff2?)$/,
   workbox.strategies.cacheFirst({
-    cacheName: "images",
+    cacheName: "ynw-images",
     plugins: [staticCachePlugin]
   })
 );
@@ -52,7 +52,7 @@ workbox.routing.registerRoute(
 workbox.routing.registerRoute(
   /\.min\.(?:js|css)$/,
   workbox.strategies.cacheFirst({
-    cacheName: "static-resources",
+    cacheName: "ynw-static",
     plugins: [staticCachePlugin]
   })
 );
@@ -61,7 +61,7 @@ workbox.routing.registerRoute(
 workbox.routing.registerRoute(
   /\.(?:bundle|swr)\.(?:js|css)/,
   workbox.strategies.staleWhileRevalidate({
-    cacheName: "static-resources"
+    cacheName: "ynw-static"
   })
 );
 
@@ -70,7 +70,7 @@ workbox.routing.registerRoute(
   /forceTimeout/,
   workbox.strategies.networkFirst({
     networkTimeoutSeconds: 3,
-    cacheName: "long-time",
+    cacheName: "ynw-timeout",
     plugins: [
       new workbox.expiration.Plugin({
         maxEntries: 50,
